@@ -11,7 +11,7 @@ package edu.brown.cs.securemusicstorage.Security;
  * @param fileAction which action is being applied to the specified file
  * @param userID which user is carrying out the action
  */
-public record ActionRequestRecord(String fileUUID, FileAction fileAction, String userID) { 
+public record RequestedAction(String fileUUID, FileAction fileAction, String userID) { 
     /**
      * The action to be performed on a file. 
      */

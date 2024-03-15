@@ -20,7 +20,7 @@ public abstract class RequestValidator {
      * @return (RequestActionResponse) the result of the requested action, and
      *         any data returned by the action, if successful.
      */
-    public abstract RequestActionResponse RequestAction(ActionRequestRecord requestedAction, String authToken); // TODO: what should the datatype for "authToken" be?
+    public abstract RequestActionResponse RequestAction(RequestedAction requestedAction, String authToken); // TODO: what should the datatype for "authToken" be?
 
     /**
      * Verifies the user’s auth token is legitimate and belongs to the specified
@@ -45,7 +45,7 @@ public abstract class RequestValidator {
      * @return (boolean) indicating if the user has sufficient permissions to
      *         carry out this action
      */
-    protected abstract boolean ValidateAction(ActionRequestRecord requestedAction);
+    protected abstract boolean ValidateAction(RequestedAction requestedAction);
 
     /**
      * Carries out the request action. Calls one of many action handlers for
@@ -59,5 +59,5 @@ public abstract class RequestValidator {
      * @return (RequestActionResponse) the result of the requested action, and
      *         any data returned by the action, if successful.
      */
-    protected abstract RequestActionResponse CarryOutAction(ActionRequestRecord requestedAction);
+    protected abstract RequestActionResponse CarryOutAction(RequestedAction requestedAction);
 }
