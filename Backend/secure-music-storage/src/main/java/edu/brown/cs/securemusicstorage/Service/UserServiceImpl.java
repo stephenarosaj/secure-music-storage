@@ -2,7 +2,6 @@ package edu.brown.cs.securemusicstorage.Service;
 
 import edu.brown.cs.securemusicstorage.Entity.User;
 import edu.brown.cs.securemusicstorage.FireStore.FireStoreService;
-import edu.brown.cs.securemusicstorage.Security.JwtTokenProvider;
 import edu.brown.cs.securemusicstorage.Util.Constants;
 import edu.brown.cs.securemusicstorage.dto.CreateUserRequest;
 import edu.brown.cs.securemusicstorage.dto.LoginRequest;
@@ -19,9 +18,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
-
-    @Resource
-    private JwtTokenProvider jwtTokenProvider;
 
     @Resource
     private FireStoreService fireStoreService;
@@ -80,39 +76,6 @@ public class UserServiceImpl implements UserService {
         fireStoreService.save(Constants.USER_COLLECTION, user, id);
     }
 
-    @Override
-    public String login(LoginRequest loginRequest) throws Exception {
-        if (StringUtils.isEmpty(loginRequest.username()) && StringUtils.isEmpty(loginRequest.email())) {
-            throw new Exception("Missing username or email");
-        }
-        if (StringUtils.isEmpty(loginRequest.password())) {
-            throw new Exception("Missing password");
-        }
-        User user = null;
-        if (StringUtils.isNotEmpty(loginRequest.username())) {
-            user = getUserInfoByUsername(loginRequest.username());
-        }
-        if (StringUtils.isNotEmpty(loginRequest.email())) {
-            user = getUserInfoByEmail(loginRequest.email());
-        }
-        if (user == null) {
-            throw new Exception("User not found");
-        }
-        if (!passwordEncoder.matches(loginRequest.password(), user.getPassword())) {
-            throw new Exception("Invalid password");
-        }
-        return authenticateUser(loginRequest.username());
-    }
-
-    private String authenticateUser(String username) {
-        return jwtTokenProvider.generateToken(username);
-    }
-
-    @Override
-    public void logout(String userId, String token) throws Exception {
-        fireStoreService.save(Constants.BLACKLIST_AUTH_TOKEN_COLLECTION, token);
-    }
-
     private void validateUser(CreateUserRequest user) throws Exception {
         if (user.username() == null || user.username().isEmpty()) {
             throw new Exception("Username cannot be empty");
@@ -144,17 +107,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUser(String id) {
-    }
-
-    @Override
-    public void validateToken(String username, String token) throws Exception {
-        if (StringUtils.isEmpty(username)) {
-            throw new Exception("Username cannot be empty");
-        }
-        if (StringUtils.isEmpty(token)) {
-            throw new Exception("Token cannot be empty");
-        }
-        jwtTokenProvider.validateToken(username, token);
     }
 
     private List<User> getAllUsers() {

@@ -42,42 +42,6 @@ public class UserController {
     }
 
     /**
-     * Logs a user in and returns an authentication token.
-     *
-     * @param loginRequest The request body containing the user's login credentials.
-     * @return ApiResponse containing the authentication token.
-     */
-    @PostMapping("/login")
-    public ApiResponse<String> login(@RequestBody LoginRequest loginRequest) {
-        ApiResponse<String> response = new ApiResponse<>();
-        try {
-            String authToken = userService.login(loginRequest);
-            response.setData(authToken);
-        } catch (Exception e) {
-            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
-        }
-        return response;
-    }
-
-    /**
-     * Logs a user out. Note: This API is not complete yet. We might need to revise the logout mechanism and consider having an extra blacklist token in the database.
-     *
-     * @param username The username of the user.
-     * @param token The user's authentication token.
-     * @return ApiResponse indicating the result of the operation.
-     */
-    @PostMapping("/logout")
-    public ApiResponse logout(@RequestParam String username, @RequestParam String token) {
-        ApiResponse response = new ApiResponse<>();
-        try {
-            userService.logout(username, token);
-        } catch (Exception e) {
-            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
-        }
-        return response;
-    }
-
-    /**
      * Searches for a user by username.
      *
      * @param username The username to search for.
@@ -123,24 +87,6 @@ public class UserController {
         ApiResponse<List<BasicUser>> response = new ApiResponse<>();
         try {
             response.setData(userService.getAllBasicUsers());
-        } catch (Exception e) {
-            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
-        }
-        return response;
-    }
-
-    /**
-     * Validates a user's authentication token. Note: This API is for testing purposes only.
-     *
-     * @param username The username of the user.
-     * @param token The user's authentication token.
-     * @return ApiResponse indicating whether the token is valid or not.
-     */
-    @PostMapping("validateToken")
-    public ApiResponse validateToken(@RequestParam String username, @RequestParam String token) {
-        ApiResponse response = new ApiResponse<>();
-        try {
-            userService.validateToken(username, token);
         } catch (Exception e) {
             response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
         }

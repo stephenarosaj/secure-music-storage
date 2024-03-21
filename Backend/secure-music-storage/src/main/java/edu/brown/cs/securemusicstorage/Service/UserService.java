@@ -47,35 +47,8 @@ public interface UserService {
      */
     void createUser(CreateUserRequest createUserRequest) throws Exception;
 
-    /**
-     * Logs in a user.
-     *
-     * @param loginRequest The request object containing the login details.
-     * @return The JWT token if the login was successful, throws an exception otherwise.
-     * @throws Exception if the login was not successful.
-     */
-    String login(LoginRequest loginRequest) throws Exception;
-
-    /**
-     * Logs out a user.
-     *
-     * @param userId The ID of the user.
-     * @param token The JWT token of the user.
-     * @throws Exception if the user could not be logged out.
-     */
-    void logout(String userId, String token) throws Exception;
-
     User updateUser(String id, User user);
 
     void deleteUser(String id);
-
-    /**
-     * Validates a JWT token.
-     *
-     * @param username The username for which the token was generated.
-     * @param token The JWT token to be validated.
-     * @throws Exception if the token could not be verified.
-     */
-    void validateToken(String username, String token) throws Exception;
 
 }
