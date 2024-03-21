@@ -9,11 +9,15 @@ import lombok.Getter;
  */
 @Getter
 public class BasicUser {
-    private final String name;
-    private final String email;
-    private final String username;
+    private String id;
+    private String name;
+    private String email;
+    private String username;
 
+    public BasicUser() {
+    }
     public BasicUser(User user) {
+        this.id = user.getId();
         this.name = user.getName();
         this.email = user.getEmail();
         this.username = user.getUsername();

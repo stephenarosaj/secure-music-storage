@@ -3,20 +3,14 @@ package edu.brown.cs.securemusicstorage.Controller;
 import edu.brown.cs.securemusicstorage.Response.ApiResponse;
 import edu.brown.cs.securemusicstorage.Response.ResponseCode;
 import edu.brown.cs.securemusicstorage.Service.UserService;
+import edu.brown.cs.securemusicstorage.dto.ChangePasswordRequest;
 import edu.brown.cs.securemusicstorage.dto.CreateUserRequest;
-import edu.brown.cs.securemusicstorage.dto.LoginRequest;
 import edu.brown.cs.securemusicstorage.dto.BasicUser;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * UserController is a REST controller that handles user-related requests.
- * It provides endpoints for creating an account, logging in, logging out,
- * searching for a user by username or email, getting all users, and
- * validating a token(for testing).
- */
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -87,6 +81,76 @@ public class UserController {
         ApiResponse<List<BasicUser>> response = new ApiResponse<>();
         try {
             response.setData(userService.getAllBasicUsers());
+        } catch (Exception e) {
+            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * Updates the username of a user.
+     *
+     * @param id The ID of the user.
+     * @param username The new username.
+     * @return ApiResponse indicating the result of the operation.
+     */
+    @PostMapping("/updateUsername")
+    public ApiResponse updateUsername(@RequestParam String id, @RequestParam String username) {
+        ApiResponse response = new ApiResponse<>();
+        try {
+            userService.updateUsername(id, username);
+        } catch (Exception e) {
+            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * Updates the email of a user.
+     *
+     * @param id The ID of the user.
+     * @param email The new email.
+     * @return ApiResponse indicating the result of the operation.
+     */
+    @PostMapping("/updateEmail")
+    public ApiResponse updateEmail(@RequestParam String id, @RequestParam String email) {
+        ApiResponse response = new ApiResponse<>();
+        try {
+            userService.updateEmail(id, email);
+        } catch (Exception e) {
+            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * Changes the password of a user.
+     *
+     * @param changePasswordRequest The request body containing the user's ID, old password, and new password.
+     * @return ApiResponse indicating the result of the operation.
+     */
+    @PostMapping("/changePassword")
+    public ApiResponse changePassword(@RequestBody ChangePasswordRequest changePasswordRequest) {
+        ApiResponse response = new ApiResponse<>();
+        try {
+            userService.changePassword(changePasswordRequest);
+        } catch (Exception e) {
+            response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
+        }
+        return response;
+    }
+
+    /**
+     * Deletes a user account.
+     *
+     * @param id The ID of the user to delete.
+     * @return ApiResponse indicating the result of the operation.
+     */
+    @DeleteMapping("/deleteUser")
+    public ApiResponse deleteUser(@RequestParam String id) {
+        ApiResponse response = new ApiResponse<>();
+        try {
+            userService.deleteUser(id);
         } catch (Exception e) {
             response.fail(ResponseCode.BAD_REQUEST.getCode(), e.getMessage());
         }

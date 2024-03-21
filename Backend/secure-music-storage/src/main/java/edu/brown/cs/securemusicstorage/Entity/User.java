@@ -2,6 +2,9 @@ package edu.brown.cs.securemusicstorage.Entity;
 
 import lombok.Data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Data
 public class User {
     private String username;
@@ -9,6 +12,9 @@ public class User {
     private String id;
     private String name;
     private String email;
+    private List<String> friends;
+    private List<String> friendRequests;
+    private List<String> friendRequestsSent;
 
     public User() {
     }
@@ -19,5 +25,8 @@ public class User {
         this.id = id;
         this.name = name;
         this.email = email;
+        this.friends = new ArrayList<>();
+        this.friendRequests = new ArrayList<>();
+        this.friendRequestsSent = new ArrayList<>();
     }
 }
