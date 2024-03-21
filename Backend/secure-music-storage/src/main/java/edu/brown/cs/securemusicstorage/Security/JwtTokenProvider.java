@@ -43,18 +43,19 @@ public class JwtTokenProvider {
     /**
      * Validates a JWT token.
      *
-     * @param username The username for which the token was generated.
+     * @param username  The username for which the token was generated.
      * @param authToken The JWT token to be validated.
-     * @return true if the token is valid, false otherwise.
      * @throws Exception if the token could not be verified.
      */
-    public boolean validateToken(String username, String authToken) throws Exception {
+    public void validateToken(String username, String authToken) throws Exception {
         JwtParser jwtParser = Jwts.parserBuilder().setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes())).build();
         try {
             jwtParser.parse(authToken);
-            return username.equals(getUsernameFromJWT(authToken));
+            if (!username.equals(getUsernameFromJWT(authToken))) {
+                throw new Exception("Token Invalid");
+            }
         } catch (Exception e) {
-            throw new Exception("Could not verify JWT token integrity!", e);
+            throw new Exception("Token Invalid", e);
         }
     }
 
