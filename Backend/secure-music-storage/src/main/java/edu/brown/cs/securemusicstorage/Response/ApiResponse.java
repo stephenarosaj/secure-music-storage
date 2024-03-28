@@ -24,6 +24,11 @@ public class ApiResponse<T> {
         this.message = responseCode.getMessage();
     }
 
+    public void fail(int code, String message) {
+        this.code = code;
+        this.message = message;
+    }
+
     // Getters and Setters
     public T getData() {
         return data;
